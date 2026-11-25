@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>角色 · 校友活动与捐赠项目管理系统</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --primary:#5B2533;--primary-deep:#431B26;--primary-light:#F3E9EB;
+ --secondary:#2F6F6A;--accent:#7A3947;--success:#2D765C;--warning:#B4761F;--danger:#A61B29;
+ --bg:#FAF7F5;--surface:#fff;--border:#E7DFDC;--text:#2B2321;--text2:#6B5F5C;--text3:#9A8F8C;
+}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:22px}
+.num{font-variant-numeric:tabular-nums}
+.ico{width:16px;height:16px;vertical-align:-3px}
+.layout{display:flex;height:100vh;overflow:hidden}
+.side{width:220px;background:var(--primary-deep);flex:none;display:flex;flex-direction:column}
+.brand{height:56px;display:flex;align-items:center;gap:10px;padding:0 18px;color:#fff;font-weight:600;font-size:15px;border-bottom:1px solid rgba(255,255,255,.1)}
+.logo{width:22px;height:22px;border-radius:5px;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.nav{flex:1;overflow:auto;padding-bottom:12px}
+.grp{padding:14px 18px 5px;font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1px}
+.nav a{display:flex;align-items:center;gap:9px;height:42px;padding:0 18px;color:rgba(255,255,255,.78);text-decoration:none;font-size:13.5px;border-left:3px solid transparent}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.on{background:rgba(255,255,255,.10);color:#fff;border-left-color:#fff;font-weight:500}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{height:56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 24px;flex:none}
+.crumb{font-size:13px;color:var(--text2)}
+.crumb b{color:var(--text);font-weight:500}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:18px;font-size:12px;color:var(--text3)}
+.avatar{width:32px;height:32px;border-radius:50%;background:#EADCDE;border:1px solid var(--border)}
+.who{display:flex;align-items:center;gap:8px}
+.who b{font-size:13px;color:var(--text);font-weight:500}
+.who i{font-style:normal;font-size:11px;color:var(--text3);display:block}
+.content{flex:1;overflow:auto;padding:24px}
+.page-h{display:flex;align-items:flex-end;gap:12px;margin-bottom:16px}
+.page-h h1{font-size:20px;line-height:28px;font-weight:600}
+.page-h p{font-size:12px;color:var(--text3);margin-bottom:3px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.card+.card{margin-top:16px}
+.card-h{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid #EFE8E5}
+.card-h h2{font-size:15px;font-weight:600}
+.card-h .r{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)}
+.card-b{padding:16px}
+.filter{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.inp,.sel{height:34px;border:1px solid var(--border);border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 12px;font-size:13px;color:var(--text2);min-width:200px}
+.sel{min-width:190px;max-width:240px;justify-content:space-between}
+.btn{height:34px;padding:0 16px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:13px;color:var(--text);display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn.p{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.d{background:#fff;border-color:var(--danger);color:var(--danger)}
+.btn.t{border:none;background:transparent;color:var(--accent);padding:0 6px;height:28px}
+.btn.sm{height:28px;padding:0 10px;font-size:12px}
+table{width:100%;border-collapse:collapse}
+th{height:42px;background:#F7F0EE;font-size:13px;font-weight:600;color:var(--text2);text-align:left;padding:0 12px;white-space:nowrap;border-bottom:1px solid var(--border)}
+td{height:44px;padding:0 12px;font-size:13px;border-bottom:1px solid #EFE8E5;white-space:nowrap}
+tbody tr:hover{background:#FCF8F7}
+td.r,th.r{text-align:right}
+td.c,th.c{text-align:center}
+.link{color:var(--accent);text-decoration:none}
+.tag{display:inline-block;height:22px;line-height:20px;padding:0 8px;border-radius:4px;font-size:12px;border:1px solid}
+.tag.info{color:#5B6472;background:#F1F2F4;border-color:#DDE0E4}
+.tag.teal{color:var(--secondary);background:#EAF3F2;border-color:#CFE3E1}
+.tag.ok{color:var(--success);background:#EAF4EF;border-color:#CFE5DA}
+.tag.warn{color:var(--warning);background:#FBF1E1;border-color:#EEDCBB}
+.tag.danger{color:var(--danger);background:#FBEBED;border-color:#EFCFD3}
+.tag.muted{color:var(--text2);background:#F2EFEE;border-color:#E4DDDA}
+.pager{display:flex;align-items:center;gap:10px;justify-content:flex-end;padding:14px 16px;font-size:12px;color:var(--text3)}
+.pager .pg{min-width:30px;height:30px;border:1px solid var(--border);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--text2)}
+.pager .pg.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.kpi h4{font-size:12px;color:var(--text3);font-weight:400}
+.kpi b{display:block;font-size:26px;line-height:34px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--success)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.chart{height:240px;display:flex;align-items:flex-end;gap:14px;padding:8px 4px 0}
+.bar{flex:1;background:linear-gradient(180deg,#7A3947,#5B2533);border-radius:4px 4px 0 0;position:relative}
+.bar span{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:11px;color:var(--text3)}
+.donut{width:150px;height:150px;border-radius:50%;background:conic-gradient(#5B2533 0 42%,#2F6F6A 42% 68%,#7A3947 68% 86%,#B4761F 86% 100%);position:relative;margin:14px auto}
+.donut:after{content:"";position:absolute;inset:30px;background:#fff;border-radius:50%}
+.legend{font-size:12px;color:var(--text2);line-height:24px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.tl{border-left:2px solid var(--border);margin-left:6px;padding-left:18px}
+.tl .it{position:relative;padding:0 0 18px}
+.tl .it:before{content:"";position:absolute;left:-25px;top:4px;width:8px;height:8px;border-radius:50%;background:#C9B7BB;border:2px solid #fff}
+.tl .it.done:before{background:var(--success)}
+.tl .it.now:before{background:var(--primary)}
+.tl b{font-size:13px}
+.tl em{font-style:normal;font-size:12px;color:var(--text3);margin-left:8px}
+.tl p{font-size:13px;color:var(--text2);margin-top:2px}
+.prog{height:8px;border-radius:4px;background:#F1EAE8;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--secondary)}
+.steps{display:flex;gap:0}
+.steps .st{flex:1;text-align:center;font-size:12px;color:var(--text3);position:relative;padding-top:22px}
+.steps .st:before{content:"";position:absolute;top:6px;left:0;right:0;height:2px;background:var(--border)}
+.steps .st:first-child:before{left:50%}
+.steps .st:last-child:before{right:50%}
+.steps .st:after{content:"";position:absolute;top:2px;left:50%;margin-left:-5px;width:10px;height:10px;border-radius:50%;background:#C9B7BB;border:2px solid #fff}
+.steps .st.done{color:var(--text2)}
+.steps .st.done:after{background:var(--success)}
+.steps .st.now{color:var(--primary);font-weight:600}
+.steps .st.now:after{background:var(--primary)}
+.thumbs{display:flex;gap:10px}
+.thumbs img,.thumbs div{width:96px;height:72px;border-radius:6px;background:#EFE7E4;border:1px solid var(--border);object-fit:cover}
+.dl{display:grid;grid-template-columns:110px 1fr;gap:10px 16px;font-size:13px}
+.dl dt{color:var(--text2)}
+.dl dd{color:var(--text)}
+.note{background:#FBF6F4;border:1px solid #EFE0DC;border-radius:6px;padding:12px 14px;font-size:13px;color:var(--text2)}
+.muted{color:var(--text3)}
+.hint{font-size:12px;color:var(--text3)}
+.split{display:grid;grid-template-columns:1fr 300px;gap:16px}
+.cover{height:132px;border-radius:6px;background:linear-gradient(135deg,#7A3947,#5B2533);position:relative;overflow:hidden}
+.cover b{position:absolute;left:14px;bottom:12px;color:#fff;font-size:14px;font-weight:600}
+.chips{display:flex;gap:8px}
+.chip{height:30px;padding:0 14px;border-radius:15px;border:1px solid var(--border);background:#fff;font-size:12px;color:var(--text2);display:inline-flex;align-items:center}
+.chip.on{background:var(--primary-light);border-color:#E2C9CE;color:var(--primary);font-weight:500}
+/* 门户 */
+.portal{min-height:100vh;background:var(--bg)}
+.p-top{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:28px;padding:0 40px;position:sticky;top:0;z-index:9}
+.p-brand{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--primary)}
+.p-nav{display:flex;gap:4px}
+.p-nav a{padding:6px 14px;border-radius:6px;font-size:14px;color:var(--text2);text-decoration:none}
+.p-nav a.on{background:var(--primary-light);color:var(--primary);font-weight:500}
+.p-body{max-width:1200px;margin:0 auto;padding:24px 40px 48px}
+.p-hero{background:linear-gradient(120deg,#5B2533,#7A3947 65%,#2F6F6A);border-radius:10px;padding:28px 30px;color:#fff;margin-bottom:20px}
+.p-hero h1{font-size:22px;font-weight:600}
+.p-hero p{color:rgba(255,255,255,.82);font-size:13px;margin-top:6px}
+.p-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.p-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.p-card .ph{height:110px;background:linear-gradient(135deg,#EFE0DC,#DCC7C9)}
+.p-card .pb{padding:14px}
+.p-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.p-card .meta{font-size:12px;color:var(--text3);display:flex;gap:10px;margin-bottom:8px}
+.login-wrap{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr}
+.login-bg{background:linear-gradient(140deg,#431B26,#5B2533 55%,#7A3947);position:relative;padding:56px;color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.login-bg h1{font-size:32px;line-height:44px;font-weight:600;letter-spacing:1px}
+.login-bg p{color:rgba(255,255,255,.72);margin-top:14px;font-size:14px;max-width:420px}
+.login-bg .seal{width:64px;height:64px;border:2px solid rgba(255,255,255,.45);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;letter-spacing:2px}
+.login-form{display:flex;align-items:center;justify-content:center;background:#fff}
+.login-box{width:360px}
+.login-box h2{font-size:22px;font-weight:600}
+.login-box .sub{font-size:13px;color:var(--text3);margin:6px 0 26px}
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:13px;color:var(--text2);margin-bottom:6px}
+.fld .inp{width:100%;min-width:0;height:42px}
+.login-btn{width:100%;height:44px;border:none;border-radius:6px;background:var(--primary);color:#fff;font-size:15px;font-weight:500;cursor:pointer;margin-top:6px}
+.tips{margin-top:18px;font-size:12px;color:var(--text3);line-height:22px}
+.roles{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+</style></head><body><svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="display:none">
+  <!-- 图标集：24x24 线性图标，stroke=currentColor，统一 1.6 描边。系统内所有图标取自本文件。 -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+    <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/>
+  </symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="3.5"/><path d="M2 19c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5"/>
+    <path d="M16 5.5a3.5 3.5 0 0 1 0 7"/><path d="M18 13.8c2.4.6 4 2.2 4 4.2"/>
+  </symbol>
+  <symbol id="i-org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 10h.01M15 10h.01"/>
+  </symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 14h3v3H8z"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 6 9 17l-5-5"/>
+  </symbol>
+  <symbol id="i-checkin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4"/><path d="m8.5 14 2.5 2.5L16 12"/>
+  </symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8"/><path d="M10 12h4"/>
+  </symbol>
+  <symbol id="i-donation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 21s-7-4.6-7-9.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 7 3.5C19 16.4 12 21 12 21Z"/>
+  </symbol>
+  <symbol id="i-money" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>
+  </symbol>
+  <symbol id="i-verify" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3l7 3v6c0 4.2-3 7.5-7 9-4-1.5-7-4.8-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/>
+  </symbol>
+  <symbol id="i-cert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 8h6M7 12h4"/><circle cx="17" cy="17" r="3"/><path d="m15.5 19.5-.5 3 2-1 2 1-.5-3"/>
+  </symbol>
+  <symbol id="i-progress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+  </symbol>
+  <symbol id="i-rule" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>
+  </symbol>
+  <symbol id="i-score" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 3v18h18"/><path d="m7 15 3.5-4 3 2.5L20 7"/>
+  </symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12a8 8 0 0 1-8 8H8l-4 3v-5.5A8 8 0 0 1 13 4a8 8 0 0 1 8 8Z"/><path d="M9 11h8M9 15h5"/>
+  </symbol>
+  <symbol id="i-role" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/><path d="M17 3.5 18.5 5 21 2.5"/>
+  </symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+  </symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/>
+  </symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 9a6 6 0 1 0-12 0c0 5-2 7-2 7h16s-2-2-2-7Z"/><path d="M10.5 20a2 2 0 0 0 3 0"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+  </symbol>
+  <symbol id="i-export" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/>
+  </symbol>
+</svg>
+<div class="layout"><aside class="side">
+<div class="brand"><span class="logo">校</span>校友工作平台</div><div class="nav"><div class="grp">工作台</div><a class="" href="dashboard.html"><svg class="ico"><use href="#i-dashboard"/></svg>校友运营看板</a><div class="grp">校友档案</div><a class="" href="alumni-list.html"><svg class="ico"><use href="#i-users"/></svg>校友档案</a><a class="" href="cert-audit.html"><svg class="ico"><use href="#i-verify"/></svg>认证审核</a><a class="" href="change-audit.html"><svg class="ico"><use href="#i-file"/></svg>变更审核</a><div class="grp">校友组织</div><a class="" href="org-list.html"><svg class="ico"><use href="#i-org"/></svg>组织管理</a><a class="" href="member-audit.html"><svg class="ico"><use href="#i-users"/></svg>成员审核</a><div class="grp">活动运营</div><a class="" href="activity-manage.html"><svg class="ico"><use href="#i-calendar"/></svg>活动管理</a><a class="" href="activity-audit.html"><svg class="ico"><use href="#i-check"/></svg>活动审核</a><a class="" href="signup-manage.html"><svg class="ico"><use href="#i-checkin"/></svg>报名与签到</a><a class="" href="activity-archive.html"><svg class="ico"><use href="#i-archive"/></svg>活动归档</a><div class="grp">捐赠管理</div><a class="" href="project-list.html"><svg class="ico"><use href="#i-donation"/></svg>捐赠项目</a><a class="" href="donation-record.html"><svg class="ico"><use href="#i-money"/></svg>线下捐赠登记</a><a class="" href="donation-verify.html"><svg class="ico"><use href="#i-verify"/></svg>捐赠核对</a><a class="" href="progress-publish.html"><svg class="ico"><use href="#i-progress"/></svg>进展公示</a><a class="" href="certificate.html"><svg class="ico"><use href="#i-cert"/></svg>感谢证书</a><div class="grp">创新模块</div><a class="" href="rule.html"><svg class="ico"><use href="#i-rule"/></svg>捐赠公开规则</a><a class="" href="score.html"><svg class="ico"><use href="#i-score"/></svg>计算留痕</a><div class="grp">系统</div><a class="" href="user.html"><svg class="ico"><use href="#i-user"/></svg>用户管理</a><a class="on" href="role.html"><svg class="ico"><use href="#i-role"/></svg>角色管理</a><a class="" href="menu.html"><svg class="ico"><use href="#i-menu"/></svg>菜单管理</a></div></aside>
+<div class="main"><header class="top"><div class="crumb">校友办管理员 / <b>角色管理</b></div>
+<div class="right"><span class="num">2026-11-01</span><svg class="ico"><use href="#i-bell"/></svg>
+<span class="who"><span class="avatar"></span><span><b>周敏</b><i>校友办管理员</i></span></span></div></header>
+<main class="content"><div class="page-h"><h1>角色管理</h1><p>菜单权限 + 数据范围分别控制；只有菜单权限不能直接调用写接口</p><div style="margin-left:auto;display:flex;gap:8px"><button class="btn p">新建角色</button></div></div><div class="card"><div class="card-h"><h2>角色列表</h2><div class="r"></div></div><table><thead><tr><th class="">角色编码</th><th class="">角色名称</th><th class="">数据范围</th><th class="r">已授权菜单</th><th class="c">状态</th><th class="c">操作</th></tr></thead><tbody><tr><td class="">ADMIN</td><td class="">校友办管理员</td><td class="">全部数据</td><td class="r"><span class="num">32</span></td><td class="c"><span class="tag muted">启用</span></td><td class="c"><a class="link">编辑</a> <a class="link">分配菜单</a></td></tr><tr><td class="">LIAISON</td><td class="">校友联络员</td><td class="">本人及所属组织</td><td class="r"><span class="num">26</span></td><td class="c"><span class="tag muted">启用</span></td><td class="c"><a class="link">编辑</a> <a class="link">分配菜单</a></td></tr><tr><td class="">FINANCE</td><td class="">财务登记员</td><td class="">全部捐赠与凭证</td><td class="r"><span class="num">18</span></td><td class="c"><span class="tag muted">启用</span></td><td class="c"><a class="link">编辑</a> <a class="link">分配菜单</a></td></tr><tr><td class="">ALUMNI</td><td class="">校友</td><td class="">本人数据</td><td class="r"><span class="num">12</span></td><td class="c"><span class="tag muted">启用</span></td><td class="c"><a class="link">编辑</a> <a class="link">分配菜单</a></td></tr></tbody></table><div class="pager"><span>共 4 条</span><span class="pg">‹</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">›</span><span>10 条/页</span></div></div><div style="height:16px"></div><div class="card"><div class="card-h"><h2>分配菜单 · 校友联络员</h2><div class="r"></div></div><div class="card-b" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:13px"><div>☑ 校友运营看板</div><div>☑ 校友档案（只读）</div><div>☑ 组织管理</div><div>☑ 成员审核</div><div>☑ 活动管理</div><div>☑ 报名与签到</div><div>☑ 活动归档</div><div>☐ 捐赠核对</div><div>☐ 规则配置</div><div>☐ 用户管理</div></div></div></main></div></div></body></html>

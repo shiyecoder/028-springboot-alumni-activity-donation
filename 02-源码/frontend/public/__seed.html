@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8" /><title>seed</title></head>
+<body>
+<script>
+  // 仅用于验收截图：把登录态写入 localStorage 后跳转到目标页面
+  const p = new URLSearchParams(location.search)
+  if (p.get('t')) localStorage.setItem('alumni_token', p.get('t'))
+  if (p.get('u')) localStorage.setItem('alumni_user', p.get('u'))
+  if (p.get('m')) localStorage.setItem('alumni_menus', p.get('m'))
+  location.replace(p.get('to') || '/dashboard')
+</script>
+</body>
+</html>
